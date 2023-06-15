@@ -1,0 +1,57 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.Department;
+import com.example.demo.repository.Departmentrepositary;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+
+@Service
+public class Departserimp implements Departmentservice{
+    @Autowired
+    private Departmentrepositary departmentrepo;
+
+    @Override
+        public Department saveDepartment(Department department){
+            return departmentrepo.save(department);
+        }
+        @Override
+    public List<Department> fetchDepartmentList(){
+            return departmentrepo.findAll();
+        }
+        @Override
+        public Department fetchDepartmentById(Long deaprtmentId){
+            return departmentrepo.findById(deaprtmentId).get();
+        }
+        @Override
+        public Department deleteDepartmentById(Long departmentId) {
+            Department department = departmentrepo.findById(departmentId).orElse(null);
+            if (department != null) {
+                departmentrepo.delete(department);
+            }
+            return department;
+        }
+@Override
+    public Department updateDepartment(Long deaprtmentId,Department department){
+        Department depDb=departmentrepo.findById(deaprtmentId).get();
+        if(Objects.nonNull(department.getDepartmentName())&& !"".equalsIgnoreCase(department.getDepartmentName())){
+            depDb.setDepartmentName(department.getDepartmentName());
+        }
+        if(Objects.nonNull(department.getDepartmentAddress())&& !"".equalsIgnoreCase(department.getDepartmentName())){
+            depDb.setDepartmentAddress(department.getDepartmentAddress());
+        }
+        if(Objects.nonNull(department.getDepartmentCode())&& !"".equalsIgnoreCase(department.getDepartmentName())){
+            depDb.setDepartmentCode(department.getDepartmentCode());
+        }
+        return departmentrepo.save(depDb);
+
+    }
+    @Override
+    public Department fetchDepartmentByName(String departmentName){
+        return departmentrepo.findBydepartmentName(departmentName);
+    }
+    }
+
+
